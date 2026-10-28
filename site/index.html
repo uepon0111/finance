@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#f5f6fa">
+  <meta name="description" content="TQQQの日足ローソク足パターン、過去統計、マーケット局面、ニュース出典、Gemini検証を確認する分析ダッシュボード。">
+  <title>TQQQ Candle Lab — ローソク足統計・情勢検証</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <script src="assets/app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#top" aria-label="TQQQ Candle Lab ホーム">
+        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M7 6v20M16 3v26M25 8v16"/><rect x="4" y="11" width="6" height="9" rx="1"/><rect x="13" y="8" width="6" height="13" rx="1"/><rect x="22" y="13" width="6" height="8" rx="1"/></svg></span>
+        <span><strong>TQQQ</strong><small>CANDLE LAB</small></span>
+      </a>
+      <div class="workspace-label">分析ワークスペース</div>
+      <nav class="side-nav" aria-label="ページ内ナビゲーション">
+        <a class="nav-link active" href="#overview"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="8" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="11" width="7" height="10" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg><span>概要</span></a>
+        <a class="nav-link" href="#chart-section"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18M7 15l4-5 4 3 5-7"/></svg><span>チャート・日付検証</span></a>
+        <a class="nav-link" href="#patterns"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4v16M12 2v20M19 6v12"/><rect x="2.5" y="8" width="5" height="7" rx="1"/><rect x="9.5" y="5" width="5" height="11" rx="1"/><rect x="16.5" y="10" width="5" height="6" rx="1"/></svg><span>足の種類別統計</span></a>
+        <a class="nav-link" href="#events"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H21v16H6.5A2.5 2.5 0 0 0 4 21zM4 5.5V21M8 7h9M8 11h9M8 15h6"/></svg><span>情勢・出典</span></a>
+        <a class="nav-link" href="#ai-review"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6 7 7M17 17l1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4"/><circle cx="12" cy="12" r="5"/><path d="m10 12 1.3 1.3L14.5 10"/></svg><span>Gemini検証</span></a>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="side-status"><span class="status-dot"></span><span id="sidebar-status">データを確認中</span></div>
+        <p>個人用リサーチツール<br>売買シグナルではありません</p>
+      </div>
+    </aside>
+
+    <div class="main-wrap" id="top">
+      <header class="topbar">
+        <button class="icon-button menu-toggle" id="menu-toggle" type="button" aria-label="メニューを開く" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+        <div class="topbar-title"><span class="eyebrow">MARKET RESEARCH</span><span class="topbar-separator">/</span><strong>TQQQ</strong></div>
+        <div class="topbar-actions">
+          <span class="market-date" id="market-date">データ取得前</span>
+          <button class="secondary-button refresh-button" id="refresh-button" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7v5h-5M4 17v-5h5"/><path d="M6.2 9A6.5 6.5 0 0 1 17 6.5L20 12M4 12l3 5.5A6.5 6.5 0 0 0 18 15"/></svg><span>再読込</span></button>
+        </div>
+      </header>
+
+      <main class="page-content">
+        <section class="page-heading" id="overview">
+          <div>
+            <div class="eyebrow accent-eyebrow">TQQQ / DAILY CANDLE ANALYSIS</div>
+            <h1>ローソク足統計・情勢検証</h1>
+            <p class="heading-description">過去の出現傾向と市場局面、直近ニュース、AI検証を分けて確認します。</p>
+          </div>
+          <div class="data-status-card"><span class="status-dot" id="data-status-dot"></span><div><strong id="data-status-title">データを読み込んでいます</strong><span id="data-status-detail">生成済み分析データを確認中</span></div></div>
+        </section>
+
+        <div class="risk-banner" role="note"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 21 20H3L12 3Z"/><path d="M12 9v5M12 17.2v.1"/></svg><p><strong>リスクに関する注意</strong>　TQQQはNasdaq-100の日次リターンの3倍を目指すETFです。複数日保有時のリターンは単純な3倍にならず、値動きが大きくなる場合があります。この画面は分析・検証用であり、売買推奨ではありません。</p><a href="https://www.proshares.com/our-etfs/leveraged-and-inverse/tqqq" target="_blank" rel="noopener noreferrer">公式説明 <span aria-hidden="true">↗</span></a></div>
+
+        <section class="quote-grid" aria-label="直近データ概要">
+          <article class="metric-card price-card"><div class="metric-top"><span>直近終値（調整後）</span><span class="metric-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5M4 19h16M8 15l3-4 3 2 5-7"/></svg></span></div><div class="metric-value" id="metric-close">—</div><div class="metric-foot" id="metric-close-foot">対象日：—</div></article>
+          <article class="metric-card"><div class="metric-top"><span>前日比</span><span class="metric-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 16 6-6 4 3 6-7M14 6h6v6"/></svg></span></div><div class="metric-value" id="metric-change">—</div><div class="metric-foot" id="metric-change-foot">前営業日終値との比較</div></article>
+          <article class="metric-card"><div class="metric-top"><span>分析対象の営業日</span><span class="metric-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 9h18"/></svg></span></div><div class="metric-value" id="metric-rows">—</div><div class="metric-foot" id="metric-range">対象期間：—</div></article>
+          <article class="metric-card"><div class="metric-top"><span>直近の市場局面</span><span class="metric-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6 5.6 18.4"/></svg></span></div><div class="metric-value metric-value-small" id="metric-regime">—</div><div class="metric-foot" id="metric-regime-foot">QQQ・VIX等を用いた機械的分類</div></article>
+        </section>
+
+        <section class="section-block confidence-section" aria-labelledby="confidence-heading">
+          <div class="section-heading"><div><span class="section-kicker">CONFIDENCE OVERVIEW</span><h2 id="confidence-heading">3種類の信頼度</h2></div><span class="section-note" id="confidence-target">対象足：—</span></div>
+          <div class="confidence-grid">
+            <article class="confidence-card"><div class="confidence-card-head"><span class="confidence-index">01</span><span class="confidence-type">過去統計</span><span class="grade-badge grade-d" id="stat-grade">D</span></div><h3>足の出現後の値動き</h3><p id="stat-summary">過去データを読み込んでいます。</p><div class="confidence-stats"><div><span>サンプル数</span><strong id="stat-samples">—</strong></div><div><span id="stat-hit-label">方向一致率</span><strong id="stat-hit">—</strong></div><div><span>平均5日後</span><strong id="stat-return">—</strong></div></div><div class="confidence-foot" id="stat-foot">サンプル数と95%信頼区間で評価</div></article>
+            <article class="confidence-card"><div class="confidence-card-head"><span class="confidence-index">02</span><span class="confidence-type">過去情勢＋直近情勢</span><span class="grade-badge grade-d" id="context-grade">D</span></div><h3>似た市場局面との比較</h3><p id="context-summary">市場局面と蓄積済みイベントを確認中です。</p><div class="confidence-stats"><div><span>同局面の件数</span><strong id="context-samples">—</strong></div><div><span>方向一致率</span><strong id="context-hit">—</strong></div><div><span>市場局面</span><strong id="context-regime">—</strong></div></div><div class="confidence-foot" id="context-foot">初期は市場局面統計が中心。ニュース履歴は運用とともに蓄積</div></article>
+            <article class="confidence-card ai-confidence-card"><div class="confidence-card-head"><span class="confidence-index">03</span><span class="confidence-type">Geminiによる補助検証</span><span class="grade-badge grade-d" id="ai-grade">D</span></div><h3>統計とニュースの整合性</h3><p id="ai-summary">Gemini検証結果を読み込んでいます。</p><div class="confidence-stats"><div><span>AIの方向</span><strong id="ai-direction">—</strong></div><div><span>AI自己申告</span><strong id="ai-confidence">—</strong></div><div><span>過去検証件数</span><strong id="ai-tested">—</strong></div></div><div class="confidence-foot" id="ai-foot">AIの判定は独立した事実確認ではありません</div></article>
+          </div>
+        </section>
+
+        <section class="section-block" id="chart-section" aria-labelledby="chart-heading">
+          <div class="section-heading chart-section-heading"><div><span class="section-kicker">PRICE HISTORY</span><h2 id="chart-heading">日足チャート・日付別の根拠</h2><p class="section-subtitle">ローソクを選択すると、その日の足の種類・市場局面・参照できるイベントを表示します。</p></div><div class="chart-controls"><label class="select-label" for="chart-range">表示期間</label><select id="chart-range" class="control-select"><option value="90">約3か月</option><option value="180" selected>約6か月</option><option value="365">約1年</option><option value="730">約2年</option><option value="all">全期間</option></select><label class="select-label date-jump-label" for="jump-date">日付へ移動</label><input id="jump-date" class="control-date" type="date" aria-label="表示する取引日"><button id="jump-date-button" type="button" class="secondary-button jump-button">移動</button></div></div>
+          <div class="chart-card"><div class="chart-legend"><span><i class="legend-candle up"></i>上昇日</span><span><i class="legend-candle down"></i>下落日</span><span><i class="legend-dot"></i>選択日</span><span class="chart-annotation">※ 調整後の日足。足をタップ／クリックして詳細を表示</span></div><div class="chart-stage" id="price-chart"><div class="empty-state">分析データを読み込んでいます。</div></div><div class="chart-footer"><span id="chart-date-range">—</span><span id="chart-selected-label">選択日：—</span></div></div>
+          <div class="selected-day-grid">
+            <article class="selected-day-card"><div class="selected-card-title"><div><span class="section-kicker">SELECTED SESSION</span><h3 id="selected-date-title">日付を選択</h3></div><span class="mini-status" id="selected-regime">—</span></div><div class="ohlc-grid"><div><span>始値</span><strong id="selected-open">—</strong></div><div><span>高値</span><strong id="selected-high">—</strong></div><div><span>安値</span><strong id="selected-low">—</strong></div><div><span>終値</span><strong id="selected-close">—</strong></div></div><div class="selected-pattern-block"><span class="detail-label">その日の足の種類</span><div class="tag-list" id="selected-patterns"><span class="muted">日付を選択してください</span></div></div><div class="selected-pattern-block"><span class="detail-label">その後の実績（確認できる範囲）</span><div class="forward-return-grid" id="selected-forward-returns"><span>—</span></div></div></article>
+            <article class="selected-day-card source-day-card"><div class="selected-card-title"><div><span class="section-kicker">DATE REFERENCES</span><h3>この日に関係する出典</h3></div><span class="source-count" id="selected-source-count">0件</span></div><p class="muted source-explainer">蓄積済みニュースの公開日、または当日の分析で収集した記事を表示します。記事本文の確認はリンク先で行ってください。</p><div class="date-event-list" id="selected-date-events"><div class="empty-state compact">関連するイベント参照はまだありません。</div></div></article>
+          </div>
+        </section>
+
+        <section class="section-block" id="patterns" aria-labelledby="patterns-heading">
+          <div class="section-heading"><div><span class="section-kicker">PATTERN PERFORMANCE</span><h2 id="patterns-heading">足の種類ごとの統計</h2><p class="section-subtitle">出現頻度、上昇・下落頻度、平均値幅を営業日数ごとに比較します。</p></div><div class="table-controls"><label class="select-label" for="horizon-select">判定する先の日数</label><select id="horizon-select" class="control-select"><option value="1">1営業日後</option><option value="3">3営業日後</option><option value="5" selected>5営業日後</option><option value="10">10営業日後</option></select></div></div>
+          <div class="table-card"><div class="table-toolbar"><div class="search-field"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4.5 4.5"/></svg><input id="pattern-search" type="search" placeholder="足の種類を検索" aria-label="足の種類を検索"></div><label class="checkbox-label"><input type="checkbox" id="only-current-patterns">直近に出現した足のみ</label><span class="table-result-count" id="pattern-count">—</span></div><div class="table-scroll"><table class="pattern-table"><thead><tr><th scope="col">足の種類</th><th scope="col">出現数</th><th scope="col">頻度</th><th scope="col">上昇率</th><th scope="col">下落率</th><th scope="col">平均上昇幅</th><th scope="col">平均下落幅</th><th scope="col">信頼度</th><th scope="col">最新出現日</th></tr></thead><tbody id="pattern-table-body"><tr><td colspan="9" class="table-empty">分析データを読み込んでいます。</td></tr></tbody></table></div><div class="table-footnote">各率は当該パターンの出現日から指定日数後の終値で計算。平均上昇幅はプラスリターンのみ、平均下落幅はマイナスリターンのみの平均です。</div></div>
+          <div class="pattern-detail-card" id="pattern-detail-card"><div class="pattern-detail-empty">表の足の種類を選択すると、出現履歴と各期間の統計が表示されます。</div></div>
+        </section>
+
+        <section class="section-block" id="events" aria-labelledby="events-heading">
+          <div class="section-heading"><div><span class="section-kicker">MARKET CONTEXT & SOURCES</span><h2 id="events-heading">直近の情勢・参照元</h2><p class="section-subtitle">見出しの公開日・配信元・リンクを保持し、Geminiの根拠参照と対応付けます。</p></div><div class="event-filter"><label class="select-label" for="event-category-filter">カテゴリ</label><select id="event-category-filter" class="control-select"><option value="all">すべて</option><option value="monetary_policy">金融政策・金利</option><option value="inflation">インフレ</option><option value="employment">雇用</option><option value="technology">テクノロジー</option><option value="geopolitics_trade">地政学・関税</option><option value="earnings">企業業績</option><option value="market_volatility">市場変動</option><option value="macro_growth">景気</option></select></div></div>
+          <div class="event-source-grid"><div class="event-list-card"><div class="list-card-heading"><h3>ニュース参照一覧</h3><span class="source-count" id="news-count">0件</span></div><div class="news-list" id="news-list"><div class="empty-state compact">ニュース参照を読み込んでいます。</div></div></div><div class="event-context-card"><div class="list-card-heading"><h3>市場局面の記録</h3><span class="context-pill" id="regime-pill">—</span></div><div class="regime-readout"><div class="regime-value" id="regime-title">—</div><p id="regime-description">QQQ、VIX、TQQQの変動を使い、過去データから同じ局面の結果を比較します。</p></div><div class="context-facts"><div><span>QQQ終値</span><strong id="context-qqq">—</strong></div><div><span>VIX終値</span><strong id="context-vix">—</strong></div><div><span>ニュース分類タグ</span><strong id="context-news-tags">—</strong></div><div><span>蓄積済み日次記録</span><strong id="context-history-count">—</strong></div></div><p class="small-disclaimer">市場局面は単純化したルール分類です。ニュース見出しのキーワードタグは自動抽出であり、原因や相場への影響を確定するものではありません。</p></div></div>
+        </section>
+
+        <section class="section-block" id="ai-review" aria-labelledby="ai-heading">
+          <div class="section-heading"><div><span class="section-kicker">AI CROSS-CHECK</span><h2 id="ai-heading">Geminiによる補助検証</h2><p class="section-subtitle">過去統計と提示されたニュース参照を突き合わせ、矛盾や不足を整理します。</p></div><span class="model-chip" id="model-chip">AI 未確認</span></div>
+          <div class="ai-review-grid"><article class="ai-summary-card"><div class="ai-summary-top"><span class="ai-orb"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5 14.4 9.6 21.5 12l-7.1 2.4L12 21.5 9.6 14.4 2.5 12l7.1-2.4L12 2.5Z"/></svg></span><div><span class="section-kicker">AI ASSESSMENT</span><h3 id="ai-direction-heading">方向の判定なし</h3></div><span class="grade-badge grade-d" id="ai-detail-grade">D</span></div><p id="ai-detail-summary">Geminiによる補助検証結果がここに表示されます。</p><div class="ai-lists"><div><h4>主な根拠</h4><ul id="ai-reasons"><li>—</li></ul></div><div><h4>リスク・反証要因</h4><ul id="ai-risks"><li>—</li></ul></div></div><div class="ai-meta-line"><span>モデル：<strong id="ai-model-name">—</strong></span><span>検証日時：<strong id="ai-evaluated-at">—</strong></span></div></article><article class="ai-citations-card"><div class="list-card-heading"><h3>AIが参照した出典</h3><span class="source-count" id="ai-citation-count">0件</span></div><div id="ai-citations" class="citation-list"><div class="empty-state compact">AIが参照した出典はありません。</div></div><div class="citation-note">AIが参照した出典IDは実際に取得したニュース一覧と照合し、存在するものだけを表示しています。AIがウェブ本文を独自に検証したことを意味しません。</div></article></div>
+          <div class="validation-card"><div class="validation-heading"><div><span class="section-kicker">WALK-FORWARD VALIDATION</span><h3>過去のAI判定を、その後の値動きで検証</h3><p>5営業日後の方向判定など、期限が到来した予測だけを集計します。評価件数が少ない間は参考値です。</p></div><div class="validation-total"><strong id="ai-accuracy">—</strong><span>5営業日後の方向一致率</span></div></div><div class="validation-table-wrap"><table class="validation-table"><thead><tr><th>検証期間</th><th>検証済み件数</th><th>方向一致</th><th>平均実績リターン</th></tr></thead><tbody id="validation-table-body"><tr><td colspan="4" class="table-empty">記録を読み込んでいます。</td></tr></tbody></table></div><div class="validation-footnote" id="validation-footnote">新しい予測は、必要な営業日数が経過した後に順次検証されます。</div></div>
+        </section>
+
+        <section class="section-block methodology-section" aria-labelledby="methodology-heading"><div class="section-heading"><div><span class="section-kicker">METHODOLOGY & DATA LINEAGE</span><h2 id="methodology-heading">計算方法とデータの出所</h2></div></div><div class="method-grid"><article class="method-card"><span class="method-number">01</span><h3>価格データ</h3><p>yfinance経由のYahoo Finance日足を使用。調整後OHLCにより分割・分配等の調整を反映します。取得開始日・最終日・取得行数はページ上部に表示します。</p><a href="https://finance.yahoo.com/quote/TQQQ/history/" target="_blank" rel="noopener noreferrer">TQQQの履歴データ ↗</a></article><article class="method-card"><span class="method-number">02</span><h3>足の統計</h3><p>各パターンが出た日の終値から、1・3・5・10営業日後の終値までを比較。上昇率・下落率・平均上昇幅／下落幅を算出し、未来の値は分類条件に使用しません。</p><span class="method-foot">A〜Dは統計的な再現性の目安</span></article><article class="method-card"><span class="method-number">03</span><h3>市場局面・イベント</h3><p>QQQの5営業日変化、VIX水準・変化、TQQQの実現ボラティリティで局面を分類。ニュース見出しのURLと公開日を保存し、日次ログが増えるほど過去イベントとの比較を増やします。</p><a href="https://news.google.com/" target="_blank" rel="noopener noreferrer">Google News ↗</a></article><article class="method-card"><span class="method-number">04</span><h3>信頼度と自己検証</h3><p>過去統計はサンプル数とWilson 95%信頼区間を使って格付けします。Geminiの判定は将来実績と照合しますが、AI自身の確信度だけで格付けを上げません。</p><a href="https://ai.google.dev/gemini-api/docs" target="_blank" rel="noopener noreferrer">Gemini APIの説明 ↗</a></article></div></section>
+        <footer class="page-footer"><div class="footer-brand"><span class="brand-mark small-mark" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M7 6v20M16 3v26M25 8v16"/><rect x="4" y="11" width="6" height="9" rx="1"/><rect x="13" y="8" width="6" height="13" rx="1"/><rect x="22" y="13" width="6" height="8" rx="1"/></svg></span><span><strong>TQQQ Candle Lab</strong><small>RESEARCH TOOL · NOT INVESTMENT ADVICE</small></span></div><p id="last-generated">分析データの更新日時：—</p><p class="footer-warning">過去の統計やAIの出力は将来の値動きを保証しません。最終判断は一次資料・リスク許容度・資金管理を踏まえて行ってください。</p></footer>
+      </main>
+    </div>
+  </div>
+  <div class="mobile-scrim" id="mobile-scrim" hidden></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
