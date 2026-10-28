@@ -146,3 +146,4 @@ python -m unittest discover -s tests -v
 - APIキーとDrive OAuth情報はGitHub ActionsのSecretsにだけ保存します。生成されたOAuthトークンJSONをリポジトリへ入れないでください。
 - yfinanceはYahoo Finance公開データを取得するサードパーティライブラリで、Yahooの公式な有料市場データAPIの代替保証ではありません。取得内容・利用条件・公開可否は最新の提供元条件を確認してください。
 - データ更新にはGitHub Actionsの実行時間・リポジトリ容量・Google/Geminiの割当を使います。定期実行の頻度を不必要に高く設定しないでください。
+- 
